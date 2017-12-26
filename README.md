@@ -1,6 +1,8 @@
 # R-captuda-de-dados-do-Twiiter
 Tutorial para processo de Captura de dados do twitter utilizando R.
 
+https://andrehps.blogspot.com.br/2017/12/r-captura-de-dados-no-twitter.html
+
 Para isso você deve ter:
 1) Conta no twitter
 2) Conhecimento de como criar uma app do twitter - https://apps.twitter.com/
