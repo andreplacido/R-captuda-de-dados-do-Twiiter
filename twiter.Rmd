@@ -1,0 +1,102 @@
+---
+title: "Captura de Dados Twitter"
+output: html_document
+---
+## Introdução
+O objetivo desse projeto é de forma simples demostrar um código em R para a captura de dados do Twitter.
+Após a captura você deve empregar técnicas de limpeza de dados e geração dos plot para as sua análises. Caso precise de mais detalhes sobre essa técnica você pode encontrar no post sobre <a href = https://andrehps.blogspot.com.br/2017/12/text-analytics-dados-twitter.html >Text Analytics </href>
+
+Incluindo as bibliotecas para autenticação no Twitter:
+
+```{r}
+#Carregando as bibliotecas
+library("ROAuth");
+library("base64enc");
+library("twitteR");
+library("streamR");
+
+```
+
+
+```{r}
+#Carregando os parametros de configuração  
+reqURL <- "https://api.twitter.com/oauth/request_token"
+accessURL <- "https://api.twitter.com/oauth/access_token"
+authURL <- "https://api.twitter.com/oauth/authorize"
+options(httr_oauth_cache=T)
+
+```
+
+Lembre-se que para acesso ao twitter é necessário gerar seus parâmetros de acesso. Para isso é necessário que você acesse o site <a href = https://apps.twitter.com/ >Twiiter apps </href>
+Após a configuração da sua app, basta preencher os campos abaixo que serão gerados pela página e estarão associado ao seu usuário.
+
+
+
+
+```{r}
+#Carregando as credenciais
+
+consumer_key <- "your consumer Key"
+consumer_secret <-"your consume secret"
+access_token <-"your access token"
+access_secret <-"your access secret"
+```
+
+### Critérios de Captura
+Os dados foram capturados no dia 26/Dec/2017, as 17:40 (Rio de Janeiro Time) com o limite de 3200 (max). Isso é totalmente parametrizável de acordo com o código abaixo:
+
+
+```{r}
+## Twitter authentication
+setup_twitter_oauth(consumer_key, consumer_secret, access_token,
+                    access_secret)
+
+#Carregando as bibliotecas
+library("ROAuth");
+library("twitteR");
+
+tweets <- userTimeline("g1", n = 3200)
+
+```
+
+Vamos confirmar a quantidade de tweets capturados e transformar os dados em um dataframe
+
+
+```{r}
+#Confirmando a quantidade de Tweets
+n.tweet <- length(tweets)
+
+n.tweet
+```
+
+```{r}
+#Transformando em Data Frame
+tweets.df <- twListToDF(tweets)
+
+#visualizando os resultados
+head(tweets.df)
+
+```
+
+Perceba que a primeira e segunda linha correspondem aos post realizados na página do <a href = https://twitter.com/g1?lang=en> G1 </href>
+Atente-se a data e hora para confirmar os post mencionados
+
+Para facilitar estou incluindo o print da página do G1, abaixo com os posts mencionados.
+
+<img src= http://td2i.com/Portifolio/twitter/2postg1>
+
+
+### Exportando os dados para Excel
+
+```{r}
+#exportando dados para o Excel
+#install.packages("rJava")
+#install.packages("xlsx")
+library(rJava)
+library(xlsx)
+
+write.xlsx(tweets.df, file="D://Td2i//Td2i//Projetos//twitter//Tweets.xlsx")
+```
+
+
+
